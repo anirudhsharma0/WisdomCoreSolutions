@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
 import { 
-  User, Mail, Trash2, LogOut, 
+  Mail, Trash2, LogOut, 
   LayoutGrid, Star, Eye, EyeOff, Plus, X, Globe, 
-  MapPin, CheckCircle2, PlusCircle, FolderOpen, Edit3,
-  Search, Activity, FileText, BarChart, Clock, Settings,
+  PlusCircle, FolderOpen, Edit3,
+  Search, Settings,
   LayoutDashboard, Briefcase, BarChart3, Bell, ChevronDown,
-  TrendingUp, TrendingDown, MousePointer2, Share2, MoreVertical,
-  Maximize2
+  TrendingUp, MousePointer2, MoreVertical
 } from 'lucide-react';
 import { GitHubIcon, LinkedInIcon, TwitterIcon, InstagramIcon } from '../icons/SocialIcons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, 
-  Tooltip, PieChart, Pie, Cell, BarChart as ReBarChart, Bar, Legend
+  Tooltip, PieChart, Pie, Cell
 } from 'recharts';
 
 interface InquiryType {
