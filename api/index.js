@@ -50,8 +50,11 @@ app.use('/api/admin/stats', adminStatsRouter);
 app.use('/api/admin/upload', adminUploadRouter);
 
 // Catch-all for 404
-app.use('/api*', (req, res) => {
-  res.status(404).json({ message: `API route ${req.originalUrl} not found` });
+app.use((req, res) => {
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(404).json({ message: `API route ${req.originalUrl} not found` });
+  }
+  // Let vercel handle non-api routes (frontend)
 });
 
 export default app;
