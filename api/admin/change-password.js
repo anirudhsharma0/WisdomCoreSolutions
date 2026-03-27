@@ -1,21 +1,12 @@
+import express from 'express';
 import connectDB from '../lib/db.js';
 import { Admin } from '../lib/models.js';
 import bcrypt from 'bcryptjs';
 import { verifyToken } from '../lib/auth.js';
 
-const handler = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+const router = express.Router();
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
-  }
-
+router.post('/', async (req, res) => {
   try {
     const decoded = verifyToken(req);
     if (!decoded) {
@@ -44,6 +35,6 @@ const handler = async (req, res) => {
     console.error('Password Update Error:', error);
     return res.status(500).json({ message: 'Internal Server Error. Security protocol synchronization failed.' });
   }
-};
+});
 
-export default handler;
+export default router;

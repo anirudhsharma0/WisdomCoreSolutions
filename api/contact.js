@@ -1,22 +1,10 @@
+import express from 'express';
 import connectDB from './lib/db.js';
 import { Inquiry } from './lib/models.js';
-import cors from 'cors';
-import helmet from 'helmet';
 
-const handler = async (req, res) => {
-  // CORS & Security middleware (simplified for serverless)
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+const router = express.Router();
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' });
-  }
-
+router.post('/', async (req, res) => {
   try {
     await connectDB();
     const { name, email, phone, service, message } = req.body;
@@ -33,6 +21,6 @@ const handler = async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });
   }
-};
+});
 
-export default handler;
+export default router;

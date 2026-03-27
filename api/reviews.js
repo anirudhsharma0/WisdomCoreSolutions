@@ -1,11 +1,12 @@
+import express from 'express';
 import connectDB from './lib/db.js';
 import { Review } from './lib/models.js';
 
-const handler = async (req, res) => {
-  console.log('Reviews Handler Triggered', req.method, req.url);
-  await connectDB();
+const router = express.Router();
 
-  if (req.method === 'GET') {
+router.get('/', async (req, res) => {
+  try {
+    await connectDB();
     let reviews = await Review.find({}).sort({ createdAt: -1 });
     
     // Seed sample review if empty
@@ -19,16 +20,23 @@ const handler = async (req, res) => {
     }
     
     return res.status(200).json(reviews);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
+});
 
-  if (req.method === 'POST') {
+router.post('/', async (req, res) => {
+  try {
+    await connectDB();
     const { name, text, rating } = req.body;
     const newReview = new Review({ name, text, rating });
     await newReview.save();
     return res.status(201).json(newReview);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
+});
 
-  return res.status(405).json({ message: 'Method not allowed' });
-};
-
-export default handler;
+export default router;
