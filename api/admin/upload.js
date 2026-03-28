@@ -16,24 +16,16 @@ router.post('/', async (req, res) => {
     const { base64, filename } = req.body;
     if (!base64 || !filename) return res.status(400).json({ message: 'Missing image data' });
 
-    // Clean base64 string
-    const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");
-    const buffer = Buffer.from(base64Data, 'base64');
-
-    // Create a safe unique filename
-    const safeName = filename.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
-    const uploadPath = path.join(process.cwd(), 'public', 'projects', safeName);
-
-    await fs.writeFile(uploadPath, buffer);
-
+    // Return the Data URI directly so it can be saved to MongoDB
+    // Vercel Serverless has a Read-Only filesystem, so we cannot use fs.writeFile
     return res.status(200).json({ 
       message: 'Upload successful', 
-      url: `/projects/${safeName}` 
+      url: base64 
     });
 
   } catch (err) {
     console.error('Upload error details:', err.message, err.name);
-    return res.status(401).json({ message: 'Session expired' });
+    return res.status(500).json({ message: 'Upload failed: ' + err.message });
   }
 });
 

@@ -217,20 +217,39 @@ const AdminPanel = () => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    
+    // Resize image using Canvas to avoid Vercel 4.5MB payload limit
     const reader = new FileReader();
-    reader.onloadend = async () => {
-      const base64 = reader.result as string;
-      try {
-        const res = await fetch('/api/admin/upload', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-          body: JSON.stringify({ base64, filename: file.name })
-        });
-        const data = await res.json();
-        if (res.ok) setNewProject({ ...newProject, image: data.url });
-        else alert('Upload failed: ' + data.message);
-      } catch (err) { alert('Upload failed. Check your connection.'); }
-      finally { setUploading(false); }
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 1000;
+        const scaleSize = MAX_WIDTH / img.width;
+        canvas.width = MAX_WIDTH;
+        canvas.height = img.height * scaleSize;
+        
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // Export highly compressed webp/jpeg to save database space
+        const base64 = canvas.toDataURL('image/jpeg', 0.8);
+
+        try {
+          const res = await fetch('/api/admin/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ base64, filename: file.name })
+          });
+          const data = await res.json();
+          if (res.ok) setNewProject({ ...newProject, image: data.url });
+          else alert('Upload failed: ' + data.message);
+        } catch (err) { alert('Upload failed. Check your connection.'); }
+        finally { setUploading(false); }
+      };
+      if (event.target?.result) {
+        img.src = event.target.result as string;
+      }
     };
     reader.readAsDataURL(file);
   };
