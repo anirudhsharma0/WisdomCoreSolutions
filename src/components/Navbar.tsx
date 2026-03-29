@@ -16,10 +16,10 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home',     href: '#' },
-    { name: 'Services', href: '#services' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact',  href: '#contact' },
+    { name: 'Home',     href: '/' },
+    { name: 'Services', href: '/#services' },
+    { name: 'Projects', href: '/#projects' },
+    { name: 'Contact',  href: '/contact' },
   ];
 
   return (
@@ -73,13 +73,13 @@ const Navbar = () => {
             {['Home', 'Services', 'Projects', 'Contact'].map((item) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                href={item === 'Home' ? '/' : item === 'Contact' ? '/contact' : `/#${item.toLowerCase()}`}
                 className="text-gray-800 hover:text-accent font-medium transition-colors font-dm"
               >
                 {item}
               </a>
             ))}
-            <a href="#contact">
+            <a href="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

@@ -91,7 +91,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {['Home', 'Services', 'Projects', 'Contact'].map(item => (
                 <li key={item}>
-                  <a href={`#${item.toLowerCase()}`} className="text-slate-600 hover:text-accent text-sm font-medium transition-colors font-dm">{item}</a>
+                  <a href={item === 'Home' ? '/' : item === 'Contact' ? '/contact' : `/#${item.toLowerCase()}`} className="text-slate-600 hover:text-accent text-sm font-medium transition-colors font-dm">{item}</a>
                 </li>
               ))}
             </ul>
@@ -134,9 +134,11 @@ const Footer = () => {
           <p className="text-slate-400 text-xs font-medium font-dm">
             &copy; {new Date().getFullYear()} WisdomCoreSolutions. All Rights Reserved.
           </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-slate-400 hover:text-accent text-[10px] font-black uppercase tracking-widest transition-colors font-dm">Privacy Policy</a>
-            <a href="#" className="text-slate-400 hover:text-accent text-[10px] font-black uppercase tracking-widest transition-colors font-dm">Terms of Service</a>
+          <div className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6 mt-4 md:mt-0">
+            <a href="/about" className="text-slate-400 hover:text-accent text-[10px] font-black uppercase tracking-widest transition-colors font-dm">About Us</a>
+            <a href="/privacy" className="text-slate-400 hover:text-accent text-[10px] font-black uppercase tracking-widest transition-colors font-dm">Privacy Policy</a>
+            <a href="/terms" className="text-slate-400 hover:text-accent text-[10px] font-black uppercase tracking-widest transition-colors font-dm">Terms of Service</a>
+            <a href="/disclaimer" className="text-slate-400 hover:text-accent text-[10px] font-black uppercase tracking-widest transition-colors font-dm">Disclaimer</a>
           </div>
         </div>
       </div>

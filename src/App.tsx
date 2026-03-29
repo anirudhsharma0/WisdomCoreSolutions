@@ -11,6 +11,12 @@ import TrustBanner from './components/TrustBanner';
 import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 
+import AboutPage from './pages/AboutPage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
+import ContactPage from './pages/ContactPage';
+import DisclaimerPage from './pages/DisclaimerPage';
+
 const Home = () => (
   <main className="bg-slate-50 text-slate-900 selection:bg-accent selection:text-white">
     <Navbar />
@@ -31,6 +37,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/disclaimer" element={<DisclaimerPage />} />
       </Routes>
     </Router>
   );
